@@ -18,7 +18,7 @@ Ensure you have the following tools installed on your system:
 * VUnit (installed using pip)
 
 ```sh
-  pip install vunit_hdl 
+  pip install vunit_hdl==5.0.0.dev5 
 ```
 
 ## Usage
