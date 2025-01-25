@@ -15,7 +15,7 @@ Ensure you have the following tools installed on your system:
   - Incisive
 * GTKWave (required for waveform viewing when using GHDL or NVC)
 * Python 3.0 (or newer)
-* VUnit (installed using pip)
+* VUnit 5.0.0 (installed using pip)
 
 ```sh
   pip install vunit_hdl==5.0.0.dev5 
