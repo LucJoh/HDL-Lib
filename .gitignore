@@ -12,3 +12,5 @@ transcript
 tb
 \#*#
 vhdl/i2c/vunit_out/*
+vhdl/tdm/vunit_out/*
+vhdl/tdm/build/*
