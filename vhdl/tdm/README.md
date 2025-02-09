@@ -2,7 +2,7 @@ Unix
 ```sh
   mkdir build &&
   cd build &&
-  cmake -G -DVUNIT_SIMULATOR=modelsim .. 
+  cmake -DVUNIT_SIMULATOR=modelsim .. 
 ```
 
 Windows
