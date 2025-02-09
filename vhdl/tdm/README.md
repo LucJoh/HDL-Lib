@@ -1,3 +1,11 @@
+** Unix
+```sh
+  mkdir build &&
+  cd build &&
+  cmake -G -DVUNIT_SIMULATOR=modelsim .. 
+```
+
+** Windows
 ```sh
   mkdir build &&
   cd build &&
