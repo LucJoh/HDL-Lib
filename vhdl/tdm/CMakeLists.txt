@@ -43,25 +43,59 @@ file(WRITE ${CMAKE_BINARY_DIR}/run_sim_frame.cmake
     "if(NOT DEFINED FRAME)\n"
     "    message(FATAL_ERROR \"FRAME is not set.\")\n"
     "endif()\n"
-    "execute_process(COMMAND env VUNIT_SIMULATOR=${SIM} python3 ${CMAKE_SOURCE_DIR}/run.py tdm_rx.tb.frame_${FRAME} -v)\n"
+    
+    # Windows-specific logic for setting environment variables
+    "if(WIN32)\n"
+    "    if(POLICY VERSION VERSION_GREATER_EQUAL \"10\")\n"
+    "        # PowerShell or CMD\n"
+    "        execute_process(COMMAND powershell.exe -Command \"\$env:VUNIT_SIMULATOR=${SIM}; python ${CMAKE_SOURCE_DIR}/run.py tdm_rx.tb.frame_${FRAME} -v\")\n"
+    "    else()\n"
+    "        # Older Windows systems\n"
+    "        execute_process(COMMAND cmd.exe /C \"set VUNIT_SIMULATOR=${SIM}&&python ${CMAKE_SOURCE_DIR}/run.py tdm_rx.tb.frame_${FRAME} -v\")\n"
+    "    endif()\n"
+    "else()\n"
+    "    # Linux / macOS / Git Bash\n"
+    "    execute_process(COMMAND env VUNIT_SIMULATOR=${SIM} python3 ${CMAKE_SOURCE_DIR}/run.py tdm_rx.tb.frame_${FRAME} -v)\n"
+    "endif()\n"
 )
 
 file(WRITE ${CMAKE_BINARY_DIR}/run_sim_all.cmake
     "if(NOT DEFINED SIM)\n"
     "    message(FATAL_ERROR \"SIM is not set.\")\n"
     "endif()\n"
-    "execute_process(COMMAND env VUNIT_SIMULATOR=${SIM} python3 ${CMAKE_SOURCE_DIR}/run.py -v)\n"
+    # Windows-specific logic for setting environment variables
+    "if(WIN32)\n"
+    "    if(POLICY VERSION VERSION_GREATER_EQUAL \"10\")\n"
+    "        # PowerShell or CMD\n"
+    "        execute_process(COMMAND powershell.exe -Command \"\$env:VUNIT_SIMULATOR=${SIM}; python ${CMAKE_SOURCE_DIR}/run.py -v\")\n"
+    "    else()\n"
+    "        # Older Windows systems\n"
+    "        execute_process(COMMAND cmd.exe /C \"set VUNIT_SIMULATOR=${SIM}&&python ${CMAKE_SOURCE_DIR}/run.py -v\")\n"
+    "    endif()\n"
+    "else()\n"
+    "    # Linux / macOS / Git Bash\n"
+    "    execute_process(COMMAND env VUNIT_SIMULATOR=${SIM} python3 ${CMAKE_SOURCE_DIR}/run.py -v)\n"
+    "endif()\n"
 )
 
 file(WRITE ${CMAKE_BINARY_DIR}/run_sim_all_multithread.cmake
     "if(NOT DEFINED SIM)\n"
     "    message(FATAL_ERROR \"SIM is not set.\")\n"
     "endif()\n"
-    "execute_process(COMMAND env VUNIT_SIMULATOR=${SIM} python3 ${CMAKE_SOURCE_DIR}/run.py -v -p 2)\n"
+    # Windows-specific logic for setting environment variables
+    "if(WIN32)\n"
+    "    if(POLICY VERSION VERSION_GREATER_EQUAL \"10\")\n"
+    "        execute_process(COMMAND powershell.exe -Command \"\$env:VUNIT_SIMULATOR=${SIM}; python ${CMAKE_SOURCE_DIR}/run.py -v -p 2\")\n"
+    "    else()\n"
+    "        execute_process(COMMAND cmd.exe /C \"set VUNIT_SIMULATOR=${SIM}&&python ${CMAKE_SOURCE_DIR}/run.py -v -p 2\")\n"
+    "    endif()\n"
+    "else()\n"
+    "    execute_process(COMMAND env VUNIT_SIMULATOR=${SIM} python3 ${CMAKE_SOURCE_DIR}/run.py -v -p 2)\n"
+    "endif()\n"
 )
 
 file(WRITE ${CMAKE_BINARY_DIR}/clean.cmake
-    "execute_process(COMMAND rm -rf vunit_out)\n"
+    "execute_process(COMMAND rm -rf *)\n"
 )
 
 # Add help command to display usage information
