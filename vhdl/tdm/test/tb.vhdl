@@ -80,6 +80,7 @@ begin
         frame <= x"DEADBEEF" & x"DEADBEEF" & x"DEADBEEF" & x"DEADBEEF";
       elsif run("frame 3") then
         frame <= x"DEADBEEF" & x"DEADBEEF" & x"DEADBEEF" & x"DEADBEEF";
+        assert false severity error;
       elsif run("frame 4") then
         frame <= x"DEADBEEF" & x"DEADBEEF" & x"DEADBEEF" & x"DEADBEEF";
       elsif run("frame 5") then

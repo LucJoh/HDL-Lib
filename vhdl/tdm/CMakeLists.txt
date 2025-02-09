@@ -1,127 +1,27 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.31)
 
-project(VUnitProject)
+project(tdm_rx)
 
-# Set a default simulator if not specified
-set(SIM "ghdl" CACHE STRING "Default simulator")
+# Set default simulator (can be overridden by setting VUNIT_SIMULATOR when running CMake)
+#set(VUNIT_SIMULATOR "modelsim")
 
-# Function to add custom targets for each test case
-function(add_sim_target target_name frame)
+# Define a helper function for creating simulation targets
+function(create_simulation_target target_name command_args)
+    message(STATUS "Using simulator: ${VUNIT_SIMULATOR}")
     add_custom_target(${target_name}
-        COMMAND ${CMAKE_COMMAND} -D SIM=${SIM} -D FRAME=${frame} -P ${CMAKE_BINARY_DIR}/run_sim_frame.cmake
-        COMMAND ${CMAKE_COMMAND} -E echo "Running simulation for frame_${frame} with simulator ${SIM}"
+        COMMAND ${CMAKE_COMMAND} -E env VUNIT_SIMULATOR=${VUNIT_SIMULATOR} python3 run.py ${command_args}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     )
 endfunction()
 
-# Add custom targets for each test case
-foreach(frame RANGE 1 9)
-    add_sim_target(sim_frame_${frame} ${frame})
-    add_sim_target(sim_frame_${frame}_gui ${frame})
-endforeach()
+# Create simulation targets
+create_simulation_target(sim "")
+create_simulation_target(sim_multhread "-p 9")
+create_simulation_target(sim_frame_1 "tdm. tb.frame_1")
+create_simulation_target(sim_write_gui "--gtkwave-args \"-a waves/ wave.gtkw\" --gui")
+create_simulation_target(sim_read "i2c. tb.read")
 
-# Add custom target for running all test cases
-add_custom_target(sim
-    COMMAND ${CMAKE_COMMAND} -D SIM=${SIM} -P ${CMAKE_BINARY_DIR}/run_sim_all.cmake
-    COMMAND ${CMAKE_COMMAND} -E echo "Running all simulations with simulator ${SIM}"
-)
-
-# Add custom target for running all test cases multithreaded
-add_custom_target(sim_multhread
-    COMMAND ${CMAKE_COMMAND} -D SIM=${SIM} -P ${CMAKE_BINARY_DIR}/run_sim_all_multithread.cmake
-    COMMAND ${CMAKE_COMMAND} -E echo "Running all simulations with simulator ${SIM} using multiple threads"
-)
-
-add_custom_target(clean_all
-    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_BINARY_DIR}/clean.cmake
-)
-
-# Generate scripts for running simulations
-file(WRITE ${CMAKE_BINARY_DIR}/run_sim_frame.cmake
-    "if(NOT DEFINED SIM)\n"
-    "    message(FATAL_ERROR \"SIM is not set.\")\n"
-    "endif()\n"
-    "if(NOT DEFINED FRAME)\n"
-    "    message(FATAL_ERROR \"FRAME is not set.\")\n"
-    "endif()\n"
-    
-    # Windows-specific logic for setting environment variables
-    "if(WIN32)\n"
-    "    if(POLICY VERSION VERSION_GREATER_EQUAL \"10\")\n"
-    "        # PowerShell or CMD\n"
-    "        execute_process(COMMAND powershell.exe -Command \"\$env:VUNIT_SIMULATOR=${SIM}; python ${CMAKE_SOURCE_DIR}/run.py tdm_rx.tb.frame_${FRAME} -v\")\n"
-    "    else()\n"
-    "        # Older Windows systems\n"
-    "        execute_process(COMMAND cmd.exe /C \"set VUNIT_SIMULATOR=${SIM}&&python ${CMAKE_SOURCE_DIR}/run.py tdm_rx.tb.frame_${FRAME} -v\")\n"
-    "    endif()\n"
-    "else()\n"
-    "    # Linux / macOS / Git Bash\n"
-    "    execute_process(COMMAND env VUNIT_SIMULATOR=${SIM} python3 ${CMAKE_SOURCE_DIR}/run.py tdm_rx.tb.frame_${FRAME} -v)\n"
-    "endif()\n"
-)
-
-file(WRITE ${CMAKE_BINARY_DIR}/run_sim_all.cmake
-    "if(NOT DEFINED SIM)\n"
-    "    message(FATAL_ERROR \"SIM is not set.\")\n"
-    "endif()\n"
-    # Windows-specific logic for setting environment variables
-    "if(WIN32)\n"
-    "    if(POLICY VERSION VERSION_GREATER_EQUAL \"10\")\n"
-    "        # PowerShell or CMD\n"
-    "        execute_process(COMMAND powershell.exe -Command \"\$env:VUNIT_SIMULATOR=${SIM}; python ${CMAKE_SOURCE_DIR}/run.py -v\")\n"
-    "    else()\n"
-    "        # Older Windows systems\n"
-    "        execute_process(COMMAND cmd.exe /C \"set VUNIT_SIMULATOR=${SIM}&&python ${CMAKE_SOURCE_DIR}/run.py -v\")\n"
-    "    endif()\n"
-    "else()\n"
-    "    # Linux / macOS / Git Bash\n"
-    "    execute_process(COMMAND env VUNIT_SIMULATOR=${SIM} python3 ${CMAKE_SOURCE_DIR}/run.py -v)\n"
-    "endif()\n"
-)
-
-file(WRITE ${CMAKE_BINARY_DIR}/run_sim_all_multithread.cmake
-    "if(NOT DEFINED SIM)\n"
-    "    message(FATAL_ERROR \"SIM is not set.\")\n"
-    "endif()\n"
-    # Windows-specific logic for setting environment variables
-    "if(WIN32)\n"
-    "    if(POLICY VERSION VERSION_GREATER_EQUAL \"10\")\n"
-    "        execute_process(COMMAND powershell.exe -Command \"\$env:VUNIT_SIMULATOR=${SIM}; python ${CMAKE_SOURCE_DIR}/run.py -v -p 2\")\n"
-    "    else()\n"
-    "        execute_process(COMMAND cmd.exe /C \"set VUNIT_SIMULATOR=${SIM}&&python ${CMAKE_SOURCE_DIR}/run.py -v -p 2\")\n"
-    "    endif()\n"
-    "else()\n"
-    "    execute_process(COMMAND env VUNIT_SIMULATOR=${SIM} python3 ${CMAKE_SOURCE_DIR}/run.py -v -p 2)\n"
-    "endif()\n"
-)
-
-file(WRITE ${CMAKE_BINARY_DIR}/clean.cmake
-    "execute_process(COMMAND rm -rf *)\n"
-)
-
-# Add help command to display usage information
-add_custom_target(show_help
-    COMMAND ${CMAKE_COMMAND} -E echo "$$HEADER"
-    COMMAND ${CMAKE_COMMAND} -E echo "Usage: cmake --build . --target [help|sim|sim_frame_1|sim_frame_1_gui|...|sim_frame_9|sim_frame_9_gui|sim_multhread|clean_all]"
-    COMMAND ${CMAKE_COMMAND} -E echo ""
-    COMMAND ${CMAKE_COMMAND} -E echo "You can set the simulator to modelsim|ghdl|nvc|rivierapro|activehdl|incisive by configuring the SIM variable."
-    COMMAND ${CMAKE_COMMAND} -E echo "Default simulator: ghdl"
-    COMMAND ${CMAKE_COMMAND} -E echo ""
-    COMMAND ${CMAKE_COMMAND} -E echo "For example: cmake -G Ninja -DSIM=modelsim .."
-    COMMAND ${CMAKE_COMMAND} -E echo ""
-    COMMAND ${CMAKE_COMMAND} -E echo "  sim:             Compile and simulate all test cases"
-    COMMAND ${CMAKE_COMMAND} -E echo "  sim_multhread:   Compile and simulate all test cases using multiple threads"
-    COMMAND ${CMAKE_COMMAND} -E echo "  sim_frame_<n>:   Compile and simulate frame_<n> test case"
-    COMMAND ${CMAKE_COMMAND} -E echo "  sim_frame_<n>_gui: Compile and simulate frame_<n> test case with GUI waveforms"
-    COMMAND ${CMAKE_COMMAND} -E echo "  clean_all:       Remove all generated files"
-    COMMAND ${CMAKE_COMMAND} -E echo ""
-)
-
-# Define header for help message
-set(HEADER "
-     _     ___   _       _ _   
-    \\ \\   / / | | |_ __ (_) |_ 
-     \\ \\ / /| | | | '_ \\| | __|
-      \\ V / | |_| | | | | | |_ 
-       \\_/   \\___/|_| |_|_|\\__|
-")
+# Set default build target (optional)
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY
+             DEFAULT_BUILD_TARGET sim)
 
