@@ -47,10 +47,10 @@ Run all testcases
 
 Run all testcases in parallel
 ```sh
-  make sim
+  make sim_multhread
 ```
 
 Run testcase 1 with waveform window
 ```sh
-  make sim
+  make sim_gui
 ```
