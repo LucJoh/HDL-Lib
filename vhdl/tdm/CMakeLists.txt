@@ -1,27 +1,24 @@
-cmake_minimum_required(VERSION 3.31)
+cmake_minimum_required(VERSION 3.10)
 
 project(tdm_rx)
 
-# Set default simulator (can be overridden by setting VUNIT_SIMULATOR when running CMake)
-#set(VUNIT_SIMULATOR "modelsim")
+set(VUNIT_SIMULATOR ${SIM})
 
-# Define a helper function for creating simulation targets
-function(create_simulation_target target_name command_args)
-    message(STATUS "Using simulator: ${VUNIT_SIMULATOR}")
-    add_custom_target(${target_name}
-        COMMAND ${CMAKE_COMMAND} -E env VUNIT_SIMULATOR=${VUNIT_SIMULATOR} python3 run.py ${command_args}
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-    )
-endfunction()
-
-# Create simulation targets
-create_simulation_target(sim "")
-create_simulation_target(sim_multhread "-p 9")
-create_simulation_target(sim_frame_1 "tdm. tb.frame_1")
-create_simulation_target(sim_write_gui "--gtkwave-args \"-a waves/ wave.gtkw\" --gui")
-create_simulation_target(sim_read "i2c. tb.read")
-
-# Set default build target (optional)
-set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY
-             DEFAULT_BUILD_TARGET sim)
-
+add_custom_target(sim
+    COMMAND ${CMAKE_COMMAND} -E env python3 run.py -v
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Simulating all testcases"
+    VERBATIM
+)
+add_custom_target(sim_multhread
+    COMMAND ${CMAKE_COMMAND} -E env python3 run.py -p 10
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Simulating all testcases on 10 cpu threads"
+    VERBATIM
+)
+add_custom_target(sim_gui
+    COMMAND ${CMAKE_COMMAND} -E env python3 run.py tdm_rx.tb.tc1 --gui
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Simulating testcase 1"
+    VERBATIM
+)

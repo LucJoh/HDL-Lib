@@ -12,6 +12,7 @@ entity tdm_rx is
     rstn : in  std_ulogic;
     en   : in  std_ulogic;
     din  : in  std_ulogic;
+    done : out std_ulogic;
     ch1  : out std_ulogic_vector(channel_size-1 downto 0);
     ch2  : out std_ulogic_vector(channel_size-1 downto 0);
     ch3  : out std_ulogic_vector(channel_size-1 downto 0);
@@ -21,29 +22,36 @@ end entity;
 
 architecture logic of tdm_rx is
 
-  signal frame      : std_ulogic_vector(frame_size-1 downto 0) := (others => '0');
-  signal frame_cnt  : integer                                  := 0;
+  signal frame     : std_ulogic_vector(frame_size-1 downto 0) := (others => '0');
+  signal frame_cnt : integer                                  := 0;
 
 begin
 
   process(clk, rstn)
   begin
     if rstn = '0' then
+      ch1       <= (others => 'Z');
+      ch2       <= (others => 'Z');
+      ch3       <= (others => 'Z');
+      ch4       <= (others => 'Z');
       frame_cnt <= 0;
     elsif rising_edge(clk) then
       if en = '1' then
-        if frame_cnt = frame_size-1 then
-          ch1       <= frame(frame_size-1 downto 3*frame_size/4);
-          ch2       <= frame(3*frame_size/4-1 downto frame_size/2);
-          ch3       <= frame(frame_size/2-1 downto frame_size/4);
-          ch4       <= frame(frame_size/4-1 downto 0);
+        if frame_cnt = frame_size then
+          ch1       <= frame(frame_size-1 downto 3*channel_size);
+          ch2       <= frame(3*channel_size-1 downto 2*channel_size);
+          ch3       <= frame(2*channel_size-1 downto channel_size);
+          ch4       <= frame(channel_size-1 downto 0);
+          done      <= '1';
           frame_cnt <= 0;
         else
-          frame_cnt <= frame_cnt + 1;
+          frame     <= din & frame(frame_size-1 downto 1);
           ch1       <= (others => 'Z');
           ch2       <= (others => 'Z');
           ch3       <= (others => 'Z');
           ch4       <= (others => 'Z');
+          done      <= '0';
+          frame_cnt <= frame_cnt + 1;
         end if;
       end if;
     end if;
