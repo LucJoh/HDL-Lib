@@ -5,19 +5,19 @@ project(tdm_rx)
 set(VUNIT_SIMULATOR ${SIM})
 
 add_custom_target(sim
-    COMMAND ${CMAKE_COMMAND} -E env python3 run.py -v
+    COMMAND ${CMAKE_COMMAND} -E env VUNIT_SIMULATOR=${VUNIT_SIMULATOR} python3 run.py -v
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     COMMENT "Simulating all testcases"
     VERBATIM
 )
 add_custom_target(sim_multhread
-    COMMAND ${CMAKE_COMMAND} -E env python3 run.py -p 10
+    COMMAND ${CMAKE_COMMAND} -E env VUNIT_SIMULATOR=${VUNIT_SIMULATOR} python3 run.py -p 10
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     COMMENT "Simulating all testcases on 10 cpu threads"
     VERBATIM
 )
 add_custom_target(sim_gui
-    COMMAND ${CMAKE_COMMAND} -E env python3 run.py tdm_rx.tb.tc1 --gui
+    COMMAND ${CMAKE_COMMAND} -E env VUNIT_SIMULATOR=${VUNIT_SIMULATOR} python3 run.py tdm_rx.tb.tc1 --gui
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     COMMENT "Simulating testcase 1"
     VERBATIM
