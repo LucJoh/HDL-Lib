@@ -28,14 +28,14 @@ Unix
 ```sh
   mkdir build &&
   cd build &&
-  cmake -DVUNIT_SIMULATOR=modelsim .. 
+  cmake -DSIM=modelsim .. 
 ```
 
 Windows
 ```sh
   mkdir build &&
   cd build &&
-  cmake -G "MinGW Makefiles" -DVUNIT_SIMULATOR=modelsim .. 
+  cmake -G "MinGW Makefiles" -DSIM=modelsim .. 
 ```
 
 ## Simulation
