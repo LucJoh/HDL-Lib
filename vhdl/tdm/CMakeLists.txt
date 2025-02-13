@@ -22,10 +22,3 @@ add_custom_target(sim_gui
     COMMENT "Simulating testcase 1"
     VERBATIM
 )
-add_custom_target(clean-all
-    COMMAND ${CMAKE_COMMAND} -E echo "Cleaning build directory and vunit_out folder"
-    COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}
-    COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_SOURCE_DIR}/vunit_out
-    COMMAND ${CMAKE_COMMAND} -E cd ..
-    COMMENT "Cleaning build directory and vunit_out folder"
-)
