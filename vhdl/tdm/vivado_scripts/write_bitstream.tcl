@@ -9,7 +9,7 @@ set_param general.maxThreads 8
 
 # Synthesis and Implementation
 
-set outputDir /vivado_output
+set outputDir vivado_output
 file mkdir $outputDir
 
 synth_design -top tdm_rx -part xc7a100tcsg324-1
