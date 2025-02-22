@@ -30,7 +30,7 @@ bitstream:
 	vivado -mode batch -source vivado_scripts/write_bitstream.tcl
 
 clean:
-	rm -rf vunit_out vivado_output *.log *.jou *clockInfo*
+	rm -rf vunit_out vivado_output *.log *.jou *clockInfo* .Xil
 
 help:
 	@echo "$$HEADER"
