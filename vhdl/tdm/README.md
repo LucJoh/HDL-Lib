@@ -6,6 +6,7 @@ This directory contains the necessary files and CMakeLists, to manage VHDL simul
 
 Ensure you have the following tools installed on your system:
 
+* Vivado (for generating bitstream)
 * CMake (3.10 or newer)
 * Make (for Unix) or MinGW (for Windows)
 * One of the following simulators:
@@ -20,6 +21,12 @@ Ensure you have the following tools installed on your system:
 * VUnit 5.0.0 (installed using pip)
 ```sh
   pip install vunit_hdl==5.0.0.dev5
+```
+
+## Generate bitstream
+
+```sh
+  vivado-mode batch -source vivado_scripts/write_bitstream.tcl
 ```
 
 ## Build the project
