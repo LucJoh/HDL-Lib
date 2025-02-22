@@ -26,8 +26,11 @@ sim_read_gui:
 	$(eval VUNIT_SIMULATOR = $(word 2, $(MAKECMDGOALS)))
 	python run.py i2c.tb.read --gtkwave-args "-a waves/wave.gtkw" --gui
 
+bitstream:
+	vivado -mode batch -source vivado_scripts/write_bitstream.tcl
+
 clean:
-	rm -rf vunit_out
+	rm -rf vunit_out vivado_output *.log *.jou *clockInfo*
 
 help:
 	@echo "$$HEADER"
