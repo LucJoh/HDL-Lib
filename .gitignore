@@ -13,6 +13,7 @@ tb
 \#*#
 *.log
 *.jou
+*.Xil
 *clockInfo*
 vhdl/i2c/vunit_out/*
 vhdl/tdm/vunit_out/*
