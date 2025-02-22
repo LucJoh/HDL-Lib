@@ -26,7 +26,7 @@ Ensure you have the following tools installed on your system:
 ## Generate bitstream
 
 ```sh
-  vivado-mode batch -source vivado_scripts/write_bitstream.tcl
+  vivado -mode batch -source vivado_scripts/write_bitstream.tcl
 ```
 
 ## Build the project
