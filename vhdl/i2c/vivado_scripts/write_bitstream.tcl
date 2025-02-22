@@ -12,7 +12,7 @@ set_param general.maxThreads 8
 set outputDir vivado_output
 file mkdir $outputDir
 
-synth_design -top tdm_rx -part xc7a100tcsg324-1
+synth_design -top i2c -part xc7a100tcsg324-1
 write_checkpoint -force  $outputDir/post_synth
 report_utilization -file $outputDir/post_synth_util.rpt
 report_timing -sort_by group -max_paths 5 -path_type summary -file $outputDir/post_synth_timing.rpt
