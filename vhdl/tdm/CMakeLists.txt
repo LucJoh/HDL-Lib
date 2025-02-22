@@ -23,8 +23,8 @@ add_custom_target(sim_gui
     VERBATIM
 )
 add_custom_target(write_bitstream
-    COMMAND ${CMAKE_COMMAND} -E env vivado -mode batch -source /vivado_scripts/write_bitstream.tcl
+    COMMAND ${CMAKE_COMMAND} -E env vivado -mode batch -source vivado_scripts/write_bitstream.tcl
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    COMMENT "Simulating testcase 1"
+    COMMENT "Running Synthesis"
     VERBATIM
 )

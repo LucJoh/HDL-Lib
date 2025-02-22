@@ -1,7 +1,7 @@
 # Add source files
 
-read_vhdl [glob /src/*.vhdl]
-read_xdc [glob /constraints/*.xdc]
+read_vhdl [glob src/*.vhdl]
+read_xdc [glob constraints/*.xdc]
 
 # Synthesis and Implementation
 
