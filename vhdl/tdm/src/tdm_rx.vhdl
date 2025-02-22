@@ -21,8 +21,8 @@ end entity;
 
 architecture logic of tdm_rx is
 
-  signal frame      : std_ulogic_vector(4*channel_size-1 downto 0) := (others => '0');
-  signal frame_cnt  : integer                                  := 0;
+  signal frame     : std_ulogic_vector(4*channel_size-1 downto 0) := (others => '0');
+  signal frame_cnt : integer                                      := 0;
 
 begin
 

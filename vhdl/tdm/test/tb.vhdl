@@ -35,8 +35,8 @@ begin
   -------------------------------------------------------------
   tdm_rx_inst : entity work.tdm_rx
     generic map (
-        channel_size => channel_size
-)
+      channel_size => channel_size
+      )
     port map (
       clk  => clk,                      -- i 
       rstn => rstn,                     -- i 
