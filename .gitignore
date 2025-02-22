@@ -11,6 +11,11 @@ transcript
 *.o
 tb
 \#*#
+*.log
+*.jou
+*clockInfo*
 vhdl/i2c/vunit_out/*
 vhdl/tdm/vunit_out/*
 vhdl/tdm/build/*
+vhdl/tdm/vivado_output/*
+vhdl/tdm/vivado_scripts/.Xil*

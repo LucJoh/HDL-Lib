@@ -4,8 +4,7 @@ use ieee.numeric_std.all;
 
 entity tdm_rx is
   generic (
-    channel_size : natural := 16;
-    frame_size   : integer := channel_size * 4
+    channel_size : natural := 4
     );
   port (
     clk  : in  std_ulogic;
@@ -22,8 +21,8 @@ end entity;
 
 architecture logic of tdm_rx is
 
-  signal frame     : std_ulogic_vector(frame_size-1 downto 0) := (others => '0');
-  signal frame_cnt : integer                                  := 0;
+  signal frame      : std_ulogic_vector(4*channel_size-1 downto 0) := (others => '0');
+  signal frame_cnt  : integer                                  := 0;
 
 begin
 
@@ -37,15 +36,15 @@ begin
       frame_cnt <= 0;
     elsif rising_edge(clk) then
       if en = '1' then
-        if frame_cnt = frame_size then
-          ch1       <= frame(frame_size-1 downto 3*channel_size);
+        if frame_cnt = 4*channel_size then
+          ch1       <= frame(4*channel_size-1 downto 3*channel_size);
           ch2       <= frame(3*channel_size-1 downto 2*channel_size);
           ch3       <= frame(2*channel_size-1 downto channel_size);
           ch4       <= frame(channel_size-1 downto 0);
           done      <= '1';
           frame_cnt <= 0;
         else
-          frame     <= din & frame(frame_size-1 downto 1);
+          frame     <= din & frame(4*channel_size-1 downto 1);
           ch1       <= (others => 'Z');
           ch2       <= (others => 'Z');
           ch3       <= (others => 'Z');
