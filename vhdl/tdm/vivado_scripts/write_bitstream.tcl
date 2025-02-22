@@ -3,6 +3,10 @@
 read_vhdl [glob src/*.vhdl]
 read_xdc [glob constraints/*.xdc]
 
+# Specify number of CPU threads
+
+set_param general.maxThreads 8
+
 # Synthesis and Implementation
 
 set outputDir /vivado_output
