@@ -40,6 +40,7 @@ help:
 	@echo ""
 	@echo "For example: make sim_multread ghdl"
 	@echo ""
+	@echo "  bitstream:       Perform synthesis, implementation and write bitstream"
 	@echo "  sim:             Compile and simulate all test cases"
 	@echo "  sim_multhread:   Compile and simulate all test cases (using 2 cpu cores)"
 	@echo "  sim_write:       Compile and simulate the write operation"
