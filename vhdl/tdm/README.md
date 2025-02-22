@@ -1,6 +1,6 @@
 # TDM VHDL Compilation and Simulation with CMake and VUnit
 
-This directory contains the necessary files and CMakeLists, to manage VHDL simulation and compilation tasks for the TDM project.
+This directory contains the necessary files and CMakeLists, to manage VHDL simulation and compilation tasks for the TDM project, with support for synthesizing, implementing, and generating the bitstream for the Arty A7-100T FPGA board.
 
 ## Prerequisites
 
@@ -61,3 +61,8 @@ Run testcase 1 with waveform window
 ```sh
   make sim_gui
 ```
+
+## Notes
+
+- Make sure to adjust the `-DSIM` flag in the `cmake` command to match your chosen simulator (e.g., `modelsim`, `ghdl`, etc.).
+- If you're using GHDL or NVC, GTKWave is required for waveform viewing. Make sure it's installed and properly configured.
