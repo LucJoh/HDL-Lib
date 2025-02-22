@@ -15,8 +15,7 @@ tb
 *.jou
 *.Xil
 *clockInfo*
-vhdl/i2c/vunit_out/*
-vhdl/tdm/vunit_out/*
+*vunit_out*
+*vivado_output*
 vhdl/tdm/build/*
-vhdl/tdm/vivado_output/*
 vhdl/tdm/vivado_scripts/.Xil*
