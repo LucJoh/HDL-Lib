@@ -17,5 +17,5 @@ tb
 *clockInfo*
 *vunit_out*
 *vivado_output*
-vhdl/tdm/build/*
-vhdl/tdm/vivado_scripts/.Xil*
+*build
+*.Xil*
