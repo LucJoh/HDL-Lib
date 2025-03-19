@@ -1,0 +1,6 @@
+/home/lucas/documents/github/HDL-Lib/vhdl/communication_protocols/tdm/build/CMakeFiles/sim.dir
+/home/lucas/documents/github/HDL-Lib/vhdl/communication_protocols/tdm/build/CMakeFiles/sim_multhread.dir
+/home/lucas/documents/github/HDL-Lib/vhdl/communication_protocols/tdm/build/CMakeFiles/sim_gui.dir
+/home/lucas/documents/github/HDL-Lib/vhdl/communication_protocols/tdm/build/CMakeFiles/write_bitstream.dir
+/home/lucas/documents/github/HDL-Lib/vhdl/communication_protocols/tdm/build/CMakeFiles/edit_cache.dir
+/home/lucas/documents/github/HDL-Lib/vhdl/communication_protocols/tdm/build/CMakeFiles/rebuild_cache.dir
