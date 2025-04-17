@@ -1,1 +1,1 @@
-rm -rf build/ vunit_out/ vivado_output/
+rm -rf build/ vunit_out/ vivado_output/ *.log *.jou clockInfo.txt
