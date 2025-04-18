@@ -69,27 +69,31 @@ init:
 	vlib work
 	vmap -c
 
+bitstream:
+	vivado -mode batch -source vivado_scripts/write_bitstream.tcl
+
 clean:
-	rm -f transcript *.wlf *.ghw *.o *.cf $(TB_ENTITY) modelsim.ini work -rf
+	rm -f transcript *.wlf *.ghw *.o *.cf $(TB_ENTITY) modelsim.ini work -rf vivado_output/ *.jou *.log .Xil/ clockInfo.txt
 
 help:
 	@echo "$$HEADER"
-	@echo "Usage: make [help|init|all|vcom|vsim|vsimb|ghdl|nvc|clean]"
+	@echo "Usage: make [help|init|all|vcom|vsim|vsimb|ghdl|nvc|bitstream|clean]"
 	@echo ""
-	@echo "  init:   Create a design library, and generate a copy of modelsim.ini"
-	@echo "  vcom:   Compile the design using Modelsim"
-	@echo "  vsim:   Simulate the design using Modelsim" 
-	@echo "  vsimb:  Simulate the design using Modelsim in batch-mode"   
-	@echo "  all:    Compile and simulate the design using Modelsim"
-	@echo "  ghdl:   Compile and simulate the design using GHDL"
-	@echo "          To view the waveforms, run 'gtkwave wave.ghw'"
-	@echo "          Save wave configuration, inside gtkwave, go to File -> Write Save File"
-	@echo "          To load the wave configuration, run 'gtkwave wave.ghw config.gtkw'"
-	@echo "  nvc:    Compile and simulate the design using NVC"
-	@echo "          To view the waveforms, run 'gtkwave wave.ghw'"
-	@echo "          Save wave configuration, inside gtkwave, go to File -> Write Save File"
-	@echo "          To load the wave configuration, run 'gtkwave wave.ghw config.gtkw'"
-	@echo "  clean:  Remove all generated files"
+	@echo "  bitstream:   Build bit-file using Vivado"
+	@echo "  init:        Create a design library, and generate a copy of modelsim.ini"
+	@echo "  vcom:        Compile the design using Modelsim"
+	@echo "  vsim:        Simulate the design using Modelsim" 
+	@echo "  vsimb:       Simulate the design using Modelsim in batch-mode"   
+	@echo "  all:         Compile and simulate the design using Modelsim"
+	@echo "  ghdl:        Compile and simulate the design using GHDL"
+	@echo "               To view the waveforms, run 'gtkwave wave.ghw'"
+	@echo "               Save wave configuration, inside gtkwave, go to File -> Write Save File"
+	@echo "               To load the wave configuration, run 'gtkwave wave.ghw config.gtkw'"
+	@echo "  nvc:         Compile and simulate the design using NVC"
+	@echo "               To view the waveforms, run 'gtkwave wave.ghw'"
+	@echo "               Save wave configuration, inside gtkwave, go to File -> Write Save File"
+	@echo "               To load the wave configuration, run 'gtkwave wave.ghw config.gtkw'"
+	@echo "  clean:       Remove all generated files"
 	@echo ""
 
 define HEADER
