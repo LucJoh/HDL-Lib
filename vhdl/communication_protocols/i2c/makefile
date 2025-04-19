@@ -34,7 +34,7 @@ clean:
 
 help:
 	@echo "$$HEADER"
-	@echo "Usage: make [help|sim|sim_write|sim_write_gui|sim_read|sim_read_gui|clean]"
+	@echo "Usage: make [help|sim|sim_write|sim_write_gui|sim_read|sim_read_gui|bitstream|clean]"
 	@echo ""
 	@echo "You need to set the simulator to modelsim|ghdl|nvc|rivierapro|activehdl|incisive"
 	@echo ""

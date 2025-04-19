@@ -38,6 +38,13 @@ The Makefile supports various targets to help you manage your simulation and com
   make help 
 ```
 
+# bitstream
+- Synthesize, implement and write bitstream:
+
+```sh
+  make bitstream
+```
+
 # init
 - Purpose: Initialize the design library and generate a copy of modelsim.ini.
 - Usage:
