@@ -3,11 +3,13 @@ use ieee.std_logic_1164.all;
 use ieee.std_logic_unsigned.all;
 
 entity fa is
-  port (a    : in  std_ulogic;
-        b    : in  std_ulogic;
-        cin  : in  std_ulogic;
-        s    : out std_ulogic;
-        cout : out std_ulogic);
+  port (
+    a    : in  std_ulogic;
+    b    : in  std_ulogic;
+    cin  : in  std_ulogic;
+    s    : out std_ulogic;
+    cout : out std_ulogic
+    );
 end fa;
 
 architecture rtl of fa is

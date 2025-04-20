@@ -8,23 +8,7 @@ sim:
 
 sim_multhread:
 	$(eval VUNIT_SIMULATOR = $(word 2, $(MAKECMDGOALS)))
-	python3 run.py -v -p 2
-
-sim_write:
-	$(eval VUNIT_SIMULATOR = $(word 2, $(MAKECMDGOALS)))
-	python3 run.py i2c.tb.write -v
-
-sim_write_gui:
-	$(eval VUNIT_SIMULATOR = $(word 2, $(MAKECMDGOALS)))
-	python run.py i2c.tb.write --gtkwave-args "-a waves/wave.gtkw" --gui
-
-sim_read:
-	$(eval VUNIT_SIMULATOR = $(word 2, $(MAKECMDGOALS)))
-	python3 run.py i2c.tb.read -v
-
-sim_read_gui:
-	$(eval VUNIT_SIMULATOR = $(word 2, $(MAKECMDGOALS)))
-	python run.py i2c.tb.read --gtkwave-args "-a waves/wave.gtkw" --gui
+	python3 run.py -v -p 6
 
 bitstream:
 	vivado -mode batch -source vivado_scripts/write_bitstream.tcl
