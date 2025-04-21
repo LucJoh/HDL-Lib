@@ -73,6 +73,46 @@ begin
         report "------------ Test Case 3 Failed ---------- result = " & to_string(result) & ", e = " & to_string(e) & ", cout = " & to_string(cout)
         severity failure;
 
+      elsif run("tc4") then
+        -- Test case 4: ADD operation (e flag and cout)
+        a  <= "1111";                   -- A = 15
+        b  <= "1111";                   -- B = 15
+        op <= "00";                     -- ADD
+        wait for 10 ns;
+        assert (result = "1110" and e = '1' and cout = '1')
+        report "------------ Test Case 3 Failed ---------- result = " & to_string(result) & ", e = " & to_string(e) & ", cout = " & to_string(cout)
+        severity failure;
+
+      elsif run("tc5") then
+        -- Test case 5: ADD operation (e flag)
+        a  <= "0000";                   -- A = 15
+        b  <= "0000";                   -- B = 15
+        op <= "00";                     -- ADD
+        wait for 10 ns;
+        assert (result = "0000" and e = '1' and cout = '0')
+        report "------------ Test Case 3 Failed ---------- result = " & to_string(result) & ", e = " & to_string(e) & ", cout = " & to_string(cout)
+        severity failure;
+
+      elsif run("tc6") then
+        -- Test case 6: SUB operation (e flag)
+        a  <= "0000";                   -- A = 15
+        b  <= "0000";                   -- B = 15
+        op <= "01";                     -- SUB
+        wait for 10 ns;
+        assert (result = "0000" and e = '1' and cout = '0')
+        report "------------ Test Case 3 Failed ---------- result = " & to_string(result) & ", e = " & to_string(e) & ", cout = " & to_string(cout)
+        severity failure;
+
+      elsif run("tc7") then
+        -- Test case 7: SUB operation (e flag)
+        a  <= "0000";                   -- A = 15
+        b  <= "0000";                   -- B = 15
+        op <= "01";                     -- SUB
+        wait for 10 ns;
+        assert (result = "0000" and e = '1' and cout = '0')
+        report "------------ Test Case 3 Failed ---------- result = " & to_string(result) & ", e = " & to_string(e) & ", cout = " & to_string(cout)
+        severity failure;
+
       end if;
 
     end loop;
