@@ -1,9 +1,25 @@
+-- ============================================================================
+-- Title       : ALU Testbench
+-- Description : VUnit-based testbench for ALU operations (ADD, SUB, AND)
+-- Author      : [Your Name]
+-- Created     : [Date]
+-- ============================================================================
+-- Notes:
+-- - Uses VUnit for structured test execution
+-- - Verifies result, equal flag (e), and carry-out (cout)
+-- ============================================================================
+
 library vunit_lib;
 context vunit_lib.vunit_context;
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use std.textio.all;
+
+-- ============================================================================
+-- Entity Declaration
+-- ============================================================================
 
 entity alu_tb is
   generic (
@@ -12,8 +28,13 @@ entity alu_tb is
     );
 end entity alu_tb;
 
+-- ============================================================================
+-- Architecture
+-- ============================================================================
+
 architecture rtl of alu_tb is
 
+  -- ALU I/O Signals
   signal a      : std_ulogic_vector(cpu_width-1 downto 0);
   signal b      : std_ulogic_vector(cpu_width-1 downto 0);
   signal op     : std_ulogic_vector(1 downto 0);
@@ -22,6 +43,10 @@ architecture rtl of alu_tb is
   signal cout   : std_ulogic;
 
 begin
+
+  -- ==========================================================================
+  -- DUT: ALU Instantiation
+  -- ==========================================================================
 
   i_alu : entity work.alu
     generic map (
@@ -36,91 +61,168 @@ begin
       cout   => cout
       );
 
-  -- Stimulus process
+  -- ==========================================================================
+  -- Stimulus Process
+  -- ==========================================================================
+
   stimulus : process
   begin
-
     test_runner_setup(runner, runner_cfg);
 
     while test_suite loop
 
+      -- ======================================================================
+      -- Test Case 1: ADD (1 + 2 = 3)
+      -- ======================================================================
       if run("tc1") then
-        -- Test case 1: ADD operation
-        a  <= "0001";                   -- A = 1
-        b  <= "0010";                   -- B = 2
-        op <= "00";                     -- ADD
-        wait for 10 ns;                 -- wait for the result to propagate
-        assert (result = "0011" and e = '0' and cout = '0') report "Test Case 1 Failed: result = " & to_string(result) & ", e = " & to_string(e) & ", cout = " & to_string(cout) 
-    severity error;
+        a <= "0001"; b <= "0010"; op <= "00"; wait for 10 ns;
+        assert (result = "0011" and e = '0' and cout = '0')
+          report
+          "  Test Case 1 Failed " & LF &
+          "    Expected : result = 0011, e = 0, cout = 0" & LF &
+          "    Got      : result = " & to_string(result) &
+          ", e = " & to_string(e) &
+          ", cout = " & to_string(cout)
+          severity error;
 
+      -- ======================================================================
+      -- Test Case 2: SUB (4 - 1 = 3)
+      -- ======================================================================
       elsif run("tc2") then
-        -- Test case 2: SUBTRACT operation (example for subtraction)
-        a  <= "0100";                   -- A = 4
-        b  <= "0001";                   -- B = 1
-        op <= "01";                     -- SUBTRACT
-        wait for 10 ns;
-        assert (result = "0011" and e = '0' and cout = '1') 
-        report "------------ Test Case 2 Failed ---------- result = " & to_string(result) & ", e = " & to_string(e) & ", cout = " & to_string(cout)
-        severity failure;
+        a <= "0100"; b <= "0001"; op <= "01"; wait for 10 ns;
+        assert (result = "0011" and e = '0' and cout = '1')
+          report
+          "  Test Case 2 Failed " & LF &
+          "    Expected : result = 0011, e = 0, cout = 1" & LF &
+          "    Got      : result = " & to_string(result) &
+          ", e = " & to_string(e) &
+          ", cout = " & to_string(cout)
+          severity failure;
 
+      -- ======================================================================
+      -- Test Case 3: AND (12 AND 10 = 8)
+      -- ======================================================================
       elsif run("tc3") then
-        -- Test case 3: AND operation
-        a  <= "1100";                   -- A = 12
-        b  <= "1010";                   -- B = 10
-        op <= "10";                     -- AND
-        wait for 10 ns;
+        a <= "1100"; b <= "1010"; op <= "10"; wait for 10 ns;
         assert (result = "1000" and e = '0' and cout = '0')
-        report "------------ Test Case 3 Failed ---------- result = " & to_string(result) & ", e = " & to_string(e) & ", cout = " & to_string(cout)
-        severity failure;
+          report
+          "  Test Case 3 Failed " & LF &
+          "    Expected : result = 1000, e = 0, cout = 0" & LF &
+          "    Got      : result = " & to_string(result) &
+          ", e = " & to_string(e) &
+          ", cout = " & to_string(cout)
+          severity failure;
 
+      -- ======================================================================
+      -- Test Case 4: ADD Overflow (15 + 15 = 14, cout and e set)
+      -- ======================================================================
       elsif run("tc4") then
-        -- Test case 4: ADD operation (e flag and cout)
-        a  <= "1111";                   -- A = 15
-        b  <= "1111";                   -- B = 15
-        op <= "00";                     -- ADD
-        wait for 10 ns;
+        a <= "1111"; b <= "1111"; op <= "00"; wait for 10 ns;
         assert (result = "1110" and e = '1' and cout = '1')
-        report "------------ Test Case 3 Failed ---------- result = " & to_string(result) & ", e = " & to_string(e) & ", cout = " & to_string(cout)
-        severity failure;
+          report
+          "  Test Case 4 Failed " & LF &
+          "    Expected : result = 1110, e = 1, cout = 1" & LF &
+          "    Got      : result = " & to_string(result) &
+          ", e = " & to_string(e) &
+          ", cout = " & to_string(cout)
+          severity failure;
 
+      -- ======================================================================
+      -- Test Case 5: ADD (0 + 0 = 0, e set)
+      -- ======================================================================
       elsif run("tc5") then
-        -- Test case 5: ADD operation (e flag)
-        a  <= "0000";                   -- A = 15
-        b  <= "0000";                   -- B = 15
-        op <= "00";                     -- ADD
-        wait for 10 ns;
+        a <= "0000"; b <= "0000"; op <= "00"; wait for 10 ns;
         assert (result = "0000" and e = '1' and cout = '0')
-        report "------------ Test Case 3 Failed ---------- result = " & to_string(result) & ", e = " & to_string(e) & ", cout = " & to_string(cout)
-        severity failure;
+          report
+          " Test Case 5 Failed " & LF &
+          "    Expected : result = 0000, e = 1, cout = 0" & LF &
+          "    Got      : result = " & to_string(result) &
+          ", e = " & to_string(e) &
+          ", cout = " & to_string(cout)
+          severity failure;
 
+      -- ======================================================================
+      -- Test Case 6: SUB (0 - 0 = 0, e and cout set)
+      -- ======================================================================
       elsif run("tc6") then
-        -- Test case 6: SUB operation (e flag)
-        a  <= "0000";                   -- A = 15
-        b  <= "0000";                   -- B = 15
-        op <= "01";                     -- SUB
-        wait for 10 ns;
-        assert (result = "0000" and e = '1' and cout = '0')
-        report "------------ Test Case 3 Failed ---------- result = " & to_string(result) & ", e = " & to_string(e) & ", cout = " & to_string(cout)
-        severity failure;
+        a <= "0000"; b <= "0000"; op <= "01"; wait for 10 ns;
+        assert (result = "0000" and e = '1' and cout = '1')
+          report
+          " Test Case 6 Failed " & LF &
+          "    Expected : result = 0000, e = 1, cout = 1" & LF &
+          "    Got      : result = " & to_string(result) &
+          ", e = " & to_string(e) &
+          ", cout = " & to_string(cout)
+          severity failure;
 
+      -- ======================================================================
+      -- Test Case 7: Duplicate of tc6 for regression check
+      -- ======================================================================
       elsif run("tc7") then
-        -- Test case 7: SUB operation (e flag)
-        a  <= "0000";                   -- A = 15
-        b  <= "0000";                   -- B = 15
-        op <= "01";                     -- SUB
-        wait for 10 ns;
-        assert (result = "0000" and e = '1' and cout = '0')
-        report "------------ Test Case 3 Failed ---------- result = " & to_string(result) & ", e = " & to_string(e) & ", cout = " & to_string(cout)
-        severity failure;
+        a <= "0000"; b <= "0000"; op <= "01"; wait for 10 ns;
+        assert (result = "0000" and e = '1' and cout = '1')
+          report
+          "  Test Case 7 Failed " & LF &
+          "    Expected : result = 0000, e = 1, cout = 1" & LF &
+          "    Got      : result = " & to_string(result) &
+          ", e = " & to_string(e) &
+          ", cout = " & to_string(cout)
+          severity failure;
+
+      -- ======================================================================
+      -- Test Case 8: ADD (15 + 1 = 0, carry out)
+      -- ======================================================================
+      elsif run("tc8") then
+        a <= "1111"; b <= "0001"; op <= "00"; wait for 10 ns;
+        assert (result = "0000" and e = '0' and cout = '1')
+          report
+          "  Test Case 8 Failed " & LF &
+          "    Expected : result = 0000, e = 0, cout = 1" & LF &
+          "    Got      : result = " & to_string(result) &
+          ", e = " & to_string(e) &
+          ", cout = " & to_string(cout)
+          severity failure;
+
+      -- ======================================================================
+      -- Test Case 9: SUB (10 - 10 = 0, e and cout set)
+      -- ======================================================================
+      elsif run("tc9") then
+        a <= "0101"; b <= "0101"; op <= "01"; wait for 10 ns;
+        assert (result = "0000" and e = '1' and cout = '1')
+          report
+          "  Test Case 9 Failed " & LF &
+          "    Expected : result = 0000, e = 1, cout = 1" & LF &
+          "    Got      : result = " & to_string(result) &
+          ", e = " & to_string(e) &
+          ", cout = " & to_string(cout)
+          severity failure;
+
+      -- ======================================================================
+      -- Test Case 10: AND (15 AND 0 = 0, no carry, e unset)
+      -- ======================================================================
+      elsif run("tc10") then
+        a <= "1111"; b <= "0000"; op <= "10"; wait for 10 ns;
+        assert (result = "0000" and e = '0' and cout = '0')
+          report
+          "  Test Case 10 Failed " & LF &
+          "    Expected : result = 0000, e = 0, cout = 0" & LF &
+          "    Got      : result = " & to_string(result) &
+          ", e = " & to_string(e) &
+          ", cout = " & to_string(cout)
+          severity failure;
 
       end if;
 
     end loop;
 
-    report "-------- TEST FINISHED SUCESSFULLY --------";
+    -- ==========================================================================
+    -- All Tests Passed
+    -- ==========================================================================
+    report " -------- TEST FINISHED SUCCESSFULLY -------- ";
     test_runner_cleanup(runner);
     wait;
 
   end process;
+
 end architecture rtl;
 
