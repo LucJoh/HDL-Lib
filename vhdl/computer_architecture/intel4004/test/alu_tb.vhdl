@@ -1,14 +1,3 @@
--- ============================================================================
--- Title       : ALU Testbench
--- Description : VUnit-based testbench for ALU operations (ADD, SUB, AND)
--- Author      : [Your Name]
--- Created     : [Date]
--- ============================================================================
--- Notes:
--- - Uses VUnit for structured test execution
--- - Verifies result, equal flag (e), and carry-out (cout)
--- ============================================================================
-
 library vunit_lib;
 context vunit_lib.vunit_context;
 
