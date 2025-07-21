@@ -5,7 +5,7 @@
 -- File       : data_path.vhdl
 -- Author     : lucjoh
 -- Created    : 2025-04-26
--- Last update: 2025-04-26
+-- Last update: 2025-07-19
 -- Standard   : VHDL-2008
 -------------------------------------------------------------------------------
 -- Description:
@@ -26,11 +26,15 @@ entity data_path is
     cpu_width : natural := 4
     );
   port (
-
+    clk  : in std_logic;
+    rstn : in std_logic;
     );
 end data_path;
 
 architecture rtl of data_path is
+
+  signal acc_out    : std_logic_vector(cpu_width-1 downto 0);
+  signal alu_result : std_logic_vector(cpu_width-1 downto 0);
 
 -------------------------------------------------------  
 -- BEGIN ARCHITECTURE 
@@ -42,12 +46,24 @@ begin
       rca_width => cpu_width
       )
     port map (
-      a      => open,
+      a      => acc_out,
       b      => open,
       op     => open,
-      result => open,
+      result => alu_result,
       e      => open,
       cout   => open,
+      );
+
+  i_accumulator : entity work.n_bit_reg
+    generic map (
+      reg_width => cpu_width
+      )
+    port map (
+      clk     => clk,
+      rstn    => rstn,
+      d       => alu_result,
+      load_en => open,
+      q       => acc_out,
       );
 
   i_n_bit_reg : entity work.n_bit_reg

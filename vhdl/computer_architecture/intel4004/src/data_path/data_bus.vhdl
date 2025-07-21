@@ -6,32 +6,32 @@ entity data_bus is
     bus_width : natural := 4
     );
   port (
-    decoEnable : in  std_logic;
-    decoSel    : in  std_logic_vector (1 downto 0);
-    instrOut   : in  std_logic_vector (bus_width-1 downto 0);
-    dataOut    : in  std_logic_vector (bus_width-1 downto 0);
-    accOut     : in  std_logic_vector (bus_width-1 downto 0);
-    extIn      : in  std_logic_vector (bus_width-1 downto 0);
-    busOut     : out std_logic_vector (bus_width-1 downto 0)
+    deco_en   : in  std_logic;
+    deco_sel  : in  std_logic_vector (1 downto 0);
+    instr_out : in  std_logic_vector (bus_width-1 downto 0);
+    data_out  : in  std_logic_vector (bus_width-1 downto 0);
+    acc_out   : in  std_logic_vector (bus_width-1 downto 0);
+    ext_in    : in  std_logic_vector (bus_width-1 downto 0);
+    bus_out   : out std_logic_vector (bus_width-1 downto 0)
     );
 end proc_bus;
 
 architecture rtl of data_bus is
 begin
-  process(decoEnable, decoSel, instrOut, dataOut, accOut, extIn)
+  process(deco_en, deco_sel, instr_out, data_out, acc_out, ext_in)
   begin
-    if (decoEnable = '1') then
-      if (decoSel = "00") then
-        busOut <= instrOut;
-      elsif (decoSel = "01") then
-        busOut <= dataOut;
-      elsif (decoSel = "10") then
-        busOut <= accOut;
-      elsif (decoSel = "11") then
-        busOut <= extIn;
+    if (deco_en = '1') then
+      if (deco_sel = "00") then
+        bus_out <= instr_out;
+      elsif (deco_sel = "01") then
+        bus_out <= data_out;
+      elsif (deco_sel = "10") then
+        bus_out <= acc_out;
+      elsif (deco_sel = "11") then
+        bus_out <= ext_in;
       end if;
     else
-      busOut <= "ZZZZZZZZ";
+      bus_out <= "ZZZZZZZZ";
     end if;
   end process;
 end rtl;
