@@ -14,7 +14,7 @@ entity data_bus is
     ext_in    : in  std_logic_vector (bus_width-1 downto 0);
     bus_out   : out std_logic_vector (bus_width-1 downto 0)
     );
-end proc_bus;
+end data_bus;
 
 architecture rtl of data_bus is
 begin

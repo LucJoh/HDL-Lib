@@ -27,7 +27,7 @@ entity data_path is
     );
   port (
     clk  : in std_logic;
-    rstn : in std_logic;
+    rstn : in std_logic
     );
 end data_path;
 
@@ -51,7 +51,7 @@ begin
       op     => open,
       result => alu_result,
       e      => open,
-      cout   => open,
+      cout   => open
       );
 
   i_accumulator : entity work.n_bit_reg
@@ -63,7 +63,7 @@ begin
       rstn    => rstn,
       d       => alu_result,
       load_en => open,
-      q       => acc_out,
+      q       => acc_out
       );
 
   i_n_bit_reg : entity work.n_bit_reg
@@ -75,7 +75,7 @@ begin
       rstn    => open,
       d       => open,
       load_en => open,
-      q       => open,
+      q       => open
       );
 
   i_mux4to1 : entity work.mux4to1
@@ -88,7 +88,7 @@ begin
       w2 => open,
       w3 => open,
       s  => open,
-      f  => open,
+      f  => open
       );
 
   i_mux2to1 : entity work.mux2to1
@@ -99,7 +99,7 @@ begin
       w0 => open,
       w1 => open,
       s  => open,
-      f  => open,
+      f  => open
       );
 
 end architecture;

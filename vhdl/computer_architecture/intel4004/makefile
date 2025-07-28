@@ -2,13 +2,21 @@ vim:noet
 
 export VUNIT_SIMULATOR=ghdl
 
-sim:
+sim_all:
 	$(eval VUNIT_SIMULATOR = $(word 2, $(MAKECMDGOALS)))
-	python3 run.py -v
+	python3 run.py
 
-sim_multhread:
+sim_alu:
 	$(eval VUNIT_SIMULATOR = $(word 2, $(MAKECMDGOALS)))
-	python3 run.py -v -p 6
+	python3 run.py alu.alu_tb.* -v
+
+sim_mux:
+	$(eval VUNIT_SIMULATOR = $(word 2, $(MAKECMDGOALS)))
+	python3 run.py mux.mux2to1_tb.* mux.mux4to1_tb* -v
+
+sim_logic:
+	$(eval VUNIT_SIMULATOR = $(word 2, $(MAKECMDGOALS)))
+	python3 run.py logic.and_gate_tb.* logic.not_gate_tb* -v
 
 bitstream:
 	vivado -mode batch -source vivado_scripts/write_bitstream.tcl
@@ -25,8 +33,10 @@ help:
 	@echo "For example: make sim_multread ghdl"
 	@echo ""
 	@echo "  bitstream:       Perform synthesis, implementation and write bitstream"
-	@echo "  sim:             Compile and simulate all test cases"
-	@echo "  sim_multhread:   Compile and simulate all test cases (using 2 cpu cores)"
+	@echo "  sim_all          Compile and simulate all testbenches"
+	@echo "  sim_alu:         Compile and simulate alu testbenches"
+	@echo "  sim_mux          Compile and simulate mux testbenches"
+	@echo "  sim_logic        Compile and simulate logic testbenches"
 	@echo "  clean:           Remove all generated files"
 	@echo ""
 

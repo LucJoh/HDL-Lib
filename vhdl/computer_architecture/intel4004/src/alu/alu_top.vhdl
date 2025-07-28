@@ -5,7 +5,7 @@
 -- File       : alu.vhdl
 -- Author     : lucjoh
 -- Created    : 2025-03-19
--- Last update: 2025-04-20
+-- Last update: 2025-07-28
 -- Standard   : VHDL-2008
 -------------------------------------------------------------------------------
 -- Description:
@@ -21,7 +21,11 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity alu is
+library alu;
+library mux;
+library logic;
+
+entity alu_top is
   generic (
     cpu_width : natural := 4
     );
@@ -33,9 +37,9 @@ entity alu is
     e      : out std_ulogic;            -- eq flag
     cout   : out std_ulogic
     );
-end alu;
+end alu_top;
 
-architecture rtl of alu is
+architecture rtl of alu_top is
 
   signal sum         : std_ulogic_vector(cpu_width-1 downto 0);
   signal diff        : std_ulogic_vector(cpu_width-1 downto 0);
@@ -50,7 +54,7 @@ architecture rtl of alu is
 -------------------------------------------------------
 begin
 
-  i_rca_add : entity work.rca
+  i_rca_add : entity alu.rca
     generic map (
       rca_width => cpu_width
       )
@@ -62,7 +66,7 @@ begin
       cout => cout_add
       );
 
-  i_rca_sub : entity work.rca
+  i_rca_sub : entity alu.rca
     generic map (
       rca_width => cpu_width
       )
@@ -74,7 +78,7 @@ begin
       cout => cout_sub
       );
 
-  i_cmp : entity work.cmp
+  i_cmp : entity alu.cmp
     generic map (
       cmp_width => cpu_width
       )
@@ -84,7 +88,7 @@ begin
       e => e
       );
 
-  i_and_gate : entity work.and_gate
+  i_and_gate : entity logic.and_gate
     generic map (
       and_gate_width => cpu_width
       )
@@ -94,7 +98,7 @@ begin
       y => logical_and
       );
 
-  i_not_gate : entity work.not_gate
+  i_not_gate : entity logic.not_gate
     generic map (
       not_gate_width => cpu_width
       )
@@ -103,7 +107,7 @@ begin
       y => b_inv
       );
 
-  i_mux4to1 : entity work.mux4to1
+  i_mux4to1 : entity mux.mux4to1
     generic map (
       mux_width => cpu_width
       )
@@ -116,7 +120,7 @@ begin
       f  => result
       );
 
-  i_mux2to1_0 : entity work.mux2to1
+  i_mux2to1_0 : entity mux.mux2to1
     generic map (
       mux_width => 1
       )
@@ -127,7 +131,7 @@ begin
       f(0)  => mux2to1_out
       );
 
-  i_mux2to1_1 : entity work.mux2to1
+  i_mux2to1_1 : entity mux.mux2to1
     generic map (
       mux_width => 1
       )

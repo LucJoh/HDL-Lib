@@ -6,6 +6,8 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use std.textio.all;
 
+library alu;
+
 -- ============================================================================
 -- Entity Declaration
 -- ============================================================================
@@ -37,7 +39,7 @@ begin
   -- DUT: ALU Instantiation
   -- ==========================================================================
 
-  i_alu : entity work.alu
+  i_alu : entity alu.alu_top
     generic map (
       cpu_width => cpu_width
       )

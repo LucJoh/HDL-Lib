@@ -5,7 +5,7 @@
 -- File       : ctrl_unit.vhdl
 -- Author     : lucjoh
 -- Created    : 2025-07-19
--- Last update: 2025-07-19
+-- Last update: 2025-07-27
 -- Standard   : VHDL-2008
 -------------------------------------------------------------------------------
 -- Description: 
