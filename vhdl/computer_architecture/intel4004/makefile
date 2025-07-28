@@ -30,7 +30,7 @@ help:
 	@echo ""
 	@echo "You need to set the simulator to modelsim|ghdl|nvc|rivierapro|activehdl|incisive"
 	@echo ""
-	@echo "For example: make sim_multread ghdl"
+	@echo "For example: make sim_all ghdl"
 	@echo ""
 	@echo "  bitstream:       Perform synthesis, implementation and write bitstream"
 	@echo "  sim_all          Compile and simulate all testbenches"
