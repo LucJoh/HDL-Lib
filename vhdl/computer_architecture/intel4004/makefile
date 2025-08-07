@@ -18,6 +18,10 @@ sim_logic:
 	$(eval VUNIT_SIMULATOR = $(word 2, $(MAKECMDGOALS)))
 	python3 run.py logic.and_gate_tb.* logic.not_gate_tb* -v
 
+sim_control:
+	$(eval VUNIT_SIMULATOR = $(word 2, $(MAKECMDGOALS)))
+	python3 run.py control.pc_tb.* -v
+
 bitstream:
 	vivado -mode batch -source vivado_scripts/write_bitstream.tcl
 

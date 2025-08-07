@@ -23,15 +23,15 @@ use ieee.numeric_std.all;
 
 entity ctrl_unit is
   port (
-    ctrl_unit_en : in  std_logic;
-    clk          : in  std_logic;
-    rstn         : in  std_logic;
-    instr        : in  std_logic_vector(7 downto 0);  -- 4-bit opcode + 4-bit reg addr
-    acc_load_en  : out std_logic;
-    reg_load_en  : out std_logic;
-    alu_op       : out std_logic_vector(1 downto 0);
-    data_bus_sel : out std_logic_vector(1 downto 0);
-    pc_inc       : out std_logic
+    master_en    : in  std_ulogic;
+    clk          : in  std_ulogic;
+    rstn         : in  std_ulogic;
+    instr        : in  std_ulogic_vector(7 downto 0);  -- 4-bit opcode + 4-bit reg addr
+    acc_load_en  : out std_ulogic;
+    reg_load_en  : out std_ulogic;
+    alu_op       : out std_ulogic_vector(1 downto 0);
+    data_bus_sel : out std_ulogic_vector(1 downto 0);
+    pc_inc       : out std_ulogic
     );
 end entity;
 
@@ -40,8 +40,8 @@ architecture rtl of ctrl_unit is
   type state_type is (FETCH, DECODE, EXECUTE);
   signal state, next_state : state_type;
 
-  signal opcode   : std_logic_vector(3 downto 0);
-  signal reg_addr : std_logic_vector(3 downto 0);
+  signal opcode   : std_ulogic_vector(3 downto 0);
+  signal reg_addr : std_ulogic_vector(3 downto 0);
 
 begin
 
@@ -55,7 +55,7 @@ begin
     if rstn = '0' then
       state <= FETCH;
     elsif rising_edge(clk) then
-      if ctrl_unit_en = '1' then
+      if master_en = '1' then
         state <= next_state;
       end if;
     end if;
@@ -77,22 +77,23 @@ begin
         next_state <= DECODE;
 
       when DECODE =>
+        pc_inc     <= '0';
         -- Decode opcode and prepare signals
         case opcode is
-          when "0000" =>                -- ADD reg
-            alu_op     <= "00";         -- ADD
+          when "0000" =>                -- ADD
+            alu_op     <= "00";         
             next_state <= EXECUTE;
-          when "0001" =>                -- SUB reg
-            alu_op     <= "01";         -- SUB
+          when "0001" =>                -- SUB
+            alu_op     <= "01";         
             next_state <= EXECUTE;
-          when "0010" =>                -- LOAD reg
-            alu_op     <= "10";         -- LOAD (pass through)
+          when "0010" =>                -- AND
+            alu_op     <= "10";         
             next_state <= EXECUTE;
-          when "0011" =>                -- STORE reg
-            alu_op     <= "11";         -- STORE (pass through)
+          when "0011" =>                -- B INV
+            alu_op     <= "11";         
             next_state <= EXECUTE;
           when others =>
-            next_state <= FETCH;        -- Invalid opcode, just fetch next
+            next_state <= FETCH;        -- Invalid opcode, fetch next opcode
         end case;
 
       when EXECUTE =>

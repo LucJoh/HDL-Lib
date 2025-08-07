@@ -18,7 +18,7 @@ architecture rtl of n_bit_reg is
 begin
   process (rstn, clk)
   begin
-    if reset = '0' then
+    if rstn = '0' then
       q <= (others => '0');
     elsif rising_edge(clk) then
       if load_en = '1' then

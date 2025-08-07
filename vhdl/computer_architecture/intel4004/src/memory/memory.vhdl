@@ -1,11 +1,11 @@
 -------------------------------------------------------------------------------
--- Title      : program counter
+-- Title      : memory
 -- Project    : 
 -------------------------------------------------------------------------------
--- File       : pc.vhdl
+-- File       : memory.vhdl
 -- Author     : lucjoh
--- Created    : 2025-07-19
--- Last update: 2025-07-29
+-- Created    : 2025-07-29
+-- Last update: 2025-07-30
 -- Standard   : VHDL-2008
 -------------------------------------------------------------------------------
 -- Description: 
@@ -14,43 +14,42 @@
 -------------------------------------------------------------------------------
 -- Revisions  :
 -- Date        Version  Author  Description
--- 2025-07-19  1.0      lucjoh  Created
+-- 2025-07-29  1.0      lucjoh  Created
 -------------------------------------------------------------------------------
 
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity pc is
+entity memory is
   generic (
     addr_width : natural := 12
     );
   port (
-    clk  : in  std_ulogic;
-    rstn : in  std_ulogic;
-    inc  : in  std_ulogic;
-    pc   : out natural
+    clk   : in std_ulogic;
+    rstn  : in std_ulogic;
+    write : in std_ulogic;
+    read  : in std_ulogic
     );
 end entity;
 
-architecture rtl of pc is
-  signal pc_tmp : natural := 0;
-begin
-  process(clk, rstn)
-  begin
-    if rstn = '0' then
-      pc_tmp <= 0;
-    elsif rising_edge(clk) then
-      if inc = '1' then
-        if pc_tmp = 100 then
-          pc_tmp <= 0;
-        else
-          pc_tmp <= pc_tmp + 1;
-        end if;
-      end if;
-    end if;
-  end process;
+architecture rtl of memory is
 
-  pc <= pc_tmp;
+-------------
+-- IR ???
+-------------
+  type memory_array is array(0 to 5) of std_ulogic_vector(7 downto 0);
+  constant memory : memory_array := (
+    "00000000",
+    "00000000",
+    "00010000",
+    "00000000",
+    "00000000",
+    "00000000"
+    );
+
+begin
+
+
 
 end rtl;

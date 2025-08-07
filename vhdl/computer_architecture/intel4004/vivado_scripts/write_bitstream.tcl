@@ -1,6 +1,10 @@
 # Add source files
 
-read_vhdl [glob src/*/*.vhdl]
+#read_vhdl [glob src/*/*.vhdl]
+read_vhdl [glob src/alu/rca.vhdl]
+read_vhdl [glob src/alu/*.vhdl]
+read_vhdl [glob src/logic/*.vhdl]
+read_vhdl [glob src/mux/*.vhdl]
 read_xdc [glob constraints/*.xdc]
 
 # Specify number of CPU threads
@@ -12,7 +16,7 @@ set_param general.maxThreads 8
 set outputDir vivado_output
 file mkdir $outputDir
 
-synth_design -top i2c -part xc7a100tcsg324-1
+synth_design -top alu_top -part xc7a100tcsg324-1
 write_checkpoint -force  $outputDir/post_synth
 report_utilization -file $outputDir/post_synth_util.rpt
 report_timing -sort_by group -max_paths 5 -path_type summary -file $outputDir/post_synth_timing.rpt
