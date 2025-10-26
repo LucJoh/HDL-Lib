@@ -1,10 +1,17 @@
 # Add source files
 
+# Read VHDL files into libraries
+read_vhdl -library alu [glob src/alu/*.vhdl]
+read_vhdl -library logic [glob src/logic/*.vhdl]
+read_vhdl -library mux [glob src/mux/*.vhdl]
+#read_vhdl -library control [glob src/control/*.vhdl]
+#read_vhdl -library memory [glob src/memory/*.vhdl]
+
 #read_vhdl [glob src/*/*.vhdl]
-read_vhdl [glob src/alu/rca.vhdl]
-read_vhdl [glob src/alu/*.vhdl]
-read_vhdl [glob src/logic/*.vhdl]
-read_vhdl [glob src/mux/*.vhdl]
+#read_vhdl [glob src/alu/rca.vhdl]
+#read_vhdl [glob src/alu/*.vhdl]
+#read_vhdl [glob src/logic/*.vhdl]
+#read_vhdl [glob src/mux/*.vhdl]
 read_xdc [glob constraints/*.xdc]
 
 # Specify number of CPU threads

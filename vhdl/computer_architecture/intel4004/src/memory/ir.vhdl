@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
--- Title      : memory
+-- Title      : Instruction register
 -- Project    : 
 -------------------------------------------------------------------------------
--- File       : memory.vhdl
+-- File       : ir.vhdl
 -- Author     : lucjoh
 -- Created    : 2025-07-29
 -- Last update: 2025-07-30
@@ -21,7 +21,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity memory is
+entity ir is
   generic (
     addr_width : natural := 12
     );
@@ -33,13 +33,10 @@ entity memory is
     );
 end entity;
 
-architecture rtl of memory is
+architecture rtl of ir is
 
--------------
--- IR ???
--------------
-  type memory_array is array(0 to 5) of std_ulogic_vector(7 downto 0);
-  constant memory : memory_array := (
+  type ir_array is array(0 to 5) of std_ulogic_vector(7 downto 0);
+  constant ir : ir_array := (
     "00000000",
     "00000000",
     "00010000",

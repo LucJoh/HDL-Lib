@@ -5,7 +5,7 @@
 -- File       : alu.vhdl
 -- Author     : lucjoh
 -- Created    : 2025-03-19
--- Last update: 2025-07-28
+-- Last update: 2025-08-23
 -- Standard   : VHDL-2008
 -------------------------------------------------------------------------------
 -- Description:

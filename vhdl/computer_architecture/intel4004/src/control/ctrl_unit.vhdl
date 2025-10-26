@@ -5,7 +5,7 @@
 -- File       : ctrl_unit.vhdl
 -- Author     : lucjoh
 -- Created    : 2025-07-19
--- Last update: 2025-07-27
+-- Last update: 2025-08-23
 -- Standard   : VHDL-2008
 -------------------------------------------------------------------------------
 -- Description: 
@@ -23,15 +23,16 @@ use ieee.numeric_std.all;
 
 entity ctrl_unit is
   port (
-    master_en    : in  std_ulogic;
-    clk          : in  std_ulogic;
-    rstn         : in  std_ulogic;
-    instr        : in  std_ulogic_vector(7 downto 0);  -- 4-bit opcode + 4-bit reg addr
-    acc_load_en  : out std_ulogic;
-    reg_load_en  : out std_ulogic;
-    alu_op       : out std_ulogic_vector(1 downto 0);
-    data_bus_sel : out std_ulogic_vector(1 downto 0);
-    pc_inc       : out std_ulogic
+    master_en     : in  std_ulogic;
+    clk           : in  std_ulogic;
+    rstn          : in  std_ulogic;
+    instr         : in  std_ulogic_vector(7 downto 0);  -- 4-bit opcode + 4-bit reg addr
+    acc_load_en   : out std_ulogic;
+    b_reg_load_en : out std_ulogic;
+    alu_op        : out std_ulogic_vector(1 downto 0);
+    data_bus_en   : out std_ulogic;
+    data_bus_sel  : out std_ulogic_vector(1 downto 0);
+    pc_inc        : out std_ulogic
     );
 end entity;
 
@@ -65,11 +66,11 @@ begin
   process(state, opcode)
   begin
     -- Default outputs
-    acc_load_en  <= '0';
-    reg_load_en  <= '0';
-    alu_op       <= (others => '0');
-    data_bus_sel <= (others => '0');
-    pc_inc       <= '0';
+    acc_load_en   <= '0';
+    b_reg_load_en <= '0';
+    alu_op        <= (others => '0');
+    data_bus_sel  <= (others => '0');
+    pc_inc        <= '0';
 
     case state is
       when FETCH =>
@@ -77,20 +78,20 @@ begin
         next_state <= DECODE;
 
       when DECODE =>
-        pc_inc     <= '0';
+        pc_inc <= '0';
         -- Decode opcode and prepare signals
         case opcode is
           when "0000" =>                -- ADD
-            alu_op     <= "00";         
+            alu_op     <= "00";
             next_state <= EXECUTE;
           when "0001" =>                -- SUB
-            alu_op     <= "01";         
+            alu_op     <= "01";
             next_state <= EXECUTE;
           when "0010" =>                -- AND
-            alu_op     <= "10";         
+            alu_op     <= "10";
             next_state <= EXECUTE;
           when "0011" =>                -- B INV
-            alu_op     <= "11";         
+            alu_op     <= "11";
             next_state <= EXECUTE;
           when others =>
             next_state <= FETCH;        -- Invalid opcode, fetch next opcode
@@ -99,11 +100,11 @@ begin
       when EXECUTE =>
         case opcode is
           when "0000" | "0001" | "0010" =>
-            acc_load_en <= '1';  -- Load accumulator after ALU op or LOAD
+            acc_load_en <= '1';    -- Load accumulator after ALU op or LOAD
             pc_inc      <= '1';         -- Increment PC after instruction
           when "0011" =>
-            reg_load_en <= '1';         -- STORE accumulator to reg
-            pc_inc      <= '1';
+            b_reg_load_en <= '1';       -- STORE accumulator to reg
+            pc_inc        <= '1';
           when others =>
             null;
         end case;
