@@ -82,7 +82,7 @@ begin
       bus_out   => bus_out
       );
   i_ctrl_unit : entity control.ctrl_unit
-    port (
+    port map (
       master_en    => master_en,
       clk          => clk,
       rstn         => rstn,
