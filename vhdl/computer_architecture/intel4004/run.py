@@ -12,7 +12,7 @@ libraries = {
     "alu":     ("src/alu", "test/alu"),
     "control": ("src/control", "test/control"),
     "memory":  ("src/memory", None),
-    # "data_path": ("src/data_path", "test/data_path"),
+    "data_path": ("src/data_path", "test/data_path"),
 }
 
 for lib_name, (src_dir, test_dir) in libraries.items():

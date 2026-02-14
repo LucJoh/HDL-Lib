@@ -41,7 +41,7 @@ begin
 
   i_alu : entity alu.alu_top
     generic map (
-      cpu_width => cpu_width
+      alu_width => cpu_width
       )
     port map (
       a      => a,

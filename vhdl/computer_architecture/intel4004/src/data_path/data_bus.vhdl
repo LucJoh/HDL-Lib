@@ -38,7 +38,7 @@ end data_bus;
 
 architecture rtl of data_bus is
 begin
-   process(deco_en, deco_sel, instr_out, data_out, acc_out, ext_in)
+   process(deco_en, deco_sel, instr_out, alu_out, acc_out)
    begin
       if (deco_en = '1') then
          if (deco_sel = "00") then

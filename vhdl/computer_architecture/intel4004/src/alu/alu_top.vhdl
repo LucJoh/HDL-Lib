@@ -27,7 +27,7 @@ library logic;
 
 entity alu_top is
   generic (
-    cpu_width : natural := 4
+    alu_width : natural := 4
     );
   port (
     a      : in  std_ulogic_vector(3 downto 0);
@@ -41,10 +41,10 @@ end alu_top;
 
 architecture rtl of alu_top is
 
-  signal sum         : std_ulogic_vector(cpu_width-1 downto 0);
-  signal diff        : std_ulogic_vector(cpu_width-1 downto 0);
-  signal logical_and : std_ulogic_vector(cpu_width-1 downto 0);
-  signal b_inv       : std_ulogic_vector(cpu_width-1 downto 0);
+  signal sum         : std_ulogic_vector(alu_width-1 downto 0);
+  signal diff        : std_ulogic_vector(alu_width-1 downto 0);
+  signal logical_and : std_ulogic_vector(alu_width-1 downto 0);
+  signal b_inv       : std_ulogic_vector(alu_width-1 downto 0);
   signal mux2to1_out : std_ulogic;
   signal cout_add    : std_ulogic;
   signal cout_sub    : std_ulogic;
@@ -56,7 +56,7 @@ begin
 
   i_rca_add : entity alu.rca
     generic map (
-      rca_width => cpu_width
+      rca_width => alu_width
       )
     port map (
       a    => a,
@@ -68,7 +68,7 @@ begin
 
   i_rca_sub : entity alu.rca
     generic map (
-      rca_width => cpu_width
+      rca_width => alu_width
       )
     port map (
       a    => a,
@@ -80,7 +80,7 @@ begin
 
   i_cmp : entity alu.cmp
     generic map (
-      cmp_width => cpu_width
+      cmp_width => alu_width
       )
     port map (
       a => a,
@@ -90,7 +90,7 @@ begin
 
   i_and_gate : entity logic.and_gate
     generic map (
-      and_gate_width => cpu_width
+      and_gate_width => alu_width
       )
     port map (
       a => a,
@@ -100,7 +100,7 @@ begin
 
   i_not_gate : entity logic.not_gate
     generic map (
-      not_gate_width => cpu_width
+      not_gate_width => alu_width
       )
     port map (
       a => b,
@@ -109,7 +109,7 @@ begin
 
   i_mux4to1 : entity mux.mux4to1
     generic map (
-      mux_width => cpu_width
+      mux_width => alu_width
       )
     port map (
       w0 => sum,

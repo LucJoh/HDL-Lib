@@ -22,6 +22,10 @@ sim_control:
 	$(eval VUNIT_SIMULATOR = $(word 2, $(MAKECMDGOALS)))
 	python3 run.py control.pc_tb.* -v
 
+sim_data_path_core:
+	$(eval VUNIT_SIMULATOR = $(word 2, $(MAKECMDGOALS)))
+	python3 run.py data_path.data_path_core_tb.* -v
+
 bitstream:
 	vivado -mode batch -source vivado_scripts/write_bitstream.tcl
 
@@ -36,12 +40,13 @@ help:
 	@echo ""
 	@echo "For example: make sim_all ghdl"
 	@echo ""
-	@echo "  bitstream:       Perform synthesis, implementation and write bitstream"
-	@echo "  sim_all          Compile and simulate all testbenches"
-	@echo "  sim_alu:         Compile and simulate alu testbenches"
-	@echo "  sim_mux          Compile and simulate mux testbenches"
-	@echo "  sim_logic        Compile and simulate logic testbenches"
-	@echo "  clean:           Remove all generated files"
+	@echo "  bitstream:         Perform synthesis, implementation and write bitstream"
+	@echo "  sim_all            Compile and simulate all testbenches"
+	@echo "  sim_alu:           Compile and simulate alu testbenches"
+	@echo "  sim_mux            Compile and simulate mux testbenches"
+	@echo "  sim_logic          Compile and simulate logic testbenches"
+	@echo "  sim_data_path_core Compile and simulate logic testbenches"
+	@echo "  clean:             Remove all generated files"
 	@echo ""
 
 define HEADER                               
