@@ -21,5 +21,7 @@ for lib_name, (src_dir, test_dir) in libraries.items():
     if test_dir:
         lib.add_source_files(str(ROOT / test_dir / "*.vhdl"))
 
+VU.set_sim_option("modelsim.vsim_flags", ["-voptargs=+acc"])
+
 VU.main()
 

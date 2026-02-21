@@ -5,7 +5,7 @@
 -- File       : data_path.vhdl
 -- Author     : lucjoh
 -- Created    : 2025-04-26
--- Last update: 2026-02-14
+-- Last update: 2026-02-21
 -- Standard   : VHDL-2008
 -------------------------------------------------------------------------------
 -- Description:
@@ -38,8 +38,7 @@ entity data_path_core is
       data_in          : in  std_ulogic_vector(cpu_width-1 downto 0);
       -- outputs
       acc_out          : out std_ulogic_vector(cpu_width-1 downto 0);
-      c_flag           : out std_ulogic;
-      e_flag           : out std_ulogic
+      c_flag           : out std_ulogic
       );
 end entity;
 
@@ -50,6 +49,7 @@ architecture rtl of data_path_core is
    signal alu_result : std_ulogic_vector(cpu_width-1 downto 0);
    signal carry      : std_ulogic;
    signal eq         : std_ulogic;
+   signal c_reg      : std_ulogic;
 
 begin
 
@@ -94,14 +94,24 @@ begin
       port map (
          clk     => clk,
          rstn    => rstn,
-         d       => data_in,
+         d       => alu_result,
          load_en => acc_load_en,
          q       => acc_reg
          );
 
-   acc_out <= alu_result;
-   c_flag  <= carry;
-   e_flag  <= eq;
+   process(clk, rstn)
+   begin
+      if rstn = '0' then
+         c_reg <= '0';
+      elsif rising_edge(clk) then
+         if acc_load_en = '1' then
+            c_reg <= carry;
+         end if;
+      end if;
+   end process;
+
+   acc_out <= acc_reg;
+   c_flag  <= c_reg;
 
 end architecture;
 
