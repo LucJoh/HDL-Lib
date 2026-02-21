@@ -26,11 +26,11 @@ Ensure you have the following tools installed on your system:
 
 The Makefile supports various targets to help you manage your simulation and compilation workflow.
 
-When compiling and simulating, it is required to specify the simulator tool.
+When compiling and simulating, it is possible to specify the simulator tool (default is modelsim).
 For example:
 
 ```sh
-  make sim_all ghdl 
+  make sim_all SIM=ghdl
 ```
 
 # clean
