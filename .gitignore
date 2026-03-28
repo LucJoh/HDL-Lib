@@ -19,3 +19,4 @@ tb
 *vivado_output*
 *build
 *.Xil*
+*.venv
